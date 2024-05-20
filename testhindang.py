@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import pyvirtualcam
+from pyvirtualcam import PixelFormat
 
 def detect_shapes(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -35,24 +37,25 @@ def detect_shapes(image):
 def main():
     cap = cv2.VideoCapture(0)
 
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
+    if not cap.isOpened():
+        print("Cannot open camera")
+        return
 
-        shapes = detect_shapes(frame)
+    with pyvirtualcam.Camera(width=640, height=480, fps=30, device='/dev/video1', fmt=PixelFormat.BGR) as cam:
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                print("Can't receive frame (stream end?). Exiting ...")
+                break
 
-        for shape, contour in shapes:
-            cv2.drawContours(frame, [contour], -1, (0, 255, 0), 2)
-            cv2.putText(frame, shape, (contour[0][0][0], contour[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+            shapes = detect_shapes(frame)
 
-        cv2.imshow("Shapes Detection", frame)
+            for shape, contour in shapes:
+                cv2.drawContours(frame, [contour], -1, (0, 255, 0), 2)
+                cv2.putText(frame, shape, (contour[0][0][0], contour[0][0][1]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
+            cam.send(frame)
+            cam.sleep_until_next_frame()
 
 if __name__ == "__main__":
     main()
