@@ -24,11 +24,11 @@ def detect_object_shape(image):
 
         # Xác định hình dạng
         if len(approx) == 3:
-            shape = "triangle"
-        elif len(approx) == 4:
+        #     shape = "triangle"
+        # elif len(approx) == 4:
             shape = "rectangle"
-        elif len(approx) == 5:
-            shape = "pentagon"
+        # elif len(approx) == 5:
+        #     shape = "pentagon"
         else:
             shape = "circle"
 
