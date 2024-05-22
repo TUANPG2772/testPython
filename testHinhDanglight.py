@@ -42,7 +42,7 @@ def detect_lights(image):
     # Chuyển đổi ảnh sang ảnh xám
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # Áp dụng ngưỡng để phát hiện các vùng sáng
-    _, bright_areas = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY)
+    _, bright_areas = cv2.threshold(gray, 230, 255, cv2.THRESH_BINARY)
 
     # Tìm contours trong các vùng sáng
     contours, _ = cv2.findContours(bright_areas, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
