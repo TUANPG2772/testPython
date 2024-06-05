@@ -24,11 +24,11 @@ def detect_object_shape(image):
 
         # Xác định hình dạng
         if len(approx) == 3:
-        #     shape = "triangle"
-        # elif len(approx) == 4:
+            shape = "triangle"
+        elif len(approx) == 4:
             shape = "rectangle"
-        # elif len(approx) == 5:
-        #     shape = "pentagon"
+        elif len(approx) == 5:
+            shape = "pentagon"
         else:
             shape = "circle"
 
@@ -73,6 +73,9 @@ else:
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 680)
     cap.set(cv2.CAP_PROP_FPS, 30)
     cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+
+    # Tạo cửa sổ
+    cv2.namedWindow("Frame", cv2.WINDOW_NORMAL)
 
     while True:
         # Đọc frame từ video capture
